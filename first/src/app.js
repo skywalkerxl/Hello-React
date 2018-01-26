@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDom from 'react-dom';
 import Nav from 'nav/Nav.js';
 import CardWrap from 'cardWrap/CardWrap.js'
+import Home from "./components/home/Home";
 
 require('semantic-ui/dist/semantic.min.css')
 require('./common/style/main.css');
@@ -36,18 +37,48 @@ let dataArr = [
 
 //  使用context
 class App extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            view: 'home'
+        }
+        this.changeView = this.changeView.bind(this)
+    }
+
+    changeView(view){
+        this.setState({
+            view: view
+        })
+    }
+
     getChildContext(){
         return {
-            et: 'Died'
+            et: 'Joined'
         }
     };
     render(){
+        let {view} = this.state;
+
         let {data} = this.props;
+
+        let viewComp = null;
+
+        switch (view){
+            case 'home':
+                viewComp = <Home/>;
+                break;
+            case 'list':
+                viewComp = <CardWrap data={data}/>;
+                break;
+            default:
+                viewComp = <Home/>;
+        }
+
         return (
             <div className={"ui container"}>
                 <div className={"ui dividing"}></div>
-                <Nav></Nav>
-                <CardWrap data={data}></CardWrap>
+                <Nav changeView={this.changeView}/>
+                {viewComp}
             </div>
         )
     }
