@@ -11,15 +11,47 @@ let propTypes = {
     likeNum: PropTypes.number
 }
 
+// 这里对context做属性验证
 let contextTypes = {
     et: PropTypes.string
 }
 
 export default class Card extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            isHeartON: false,
+            yearNum: props.year
+        }
+
+        this.heartClick = this.heartClick.bind(this)
+        this.yearAdd = this.yearAdd.bind(this)
+    }
+
+    heartClick(){
+        let {isHeartON} = this.state;
+        isHeartON = !isHeartON;
+        this.setState({
+            isHeartON
+        })
+    }
+
+    yearAdd(){
+        this.setState({
+            yearNum: this.state.yearNum + 10
+        })
+    }
+
+
     render(){
         let { imgSrc, name, rel, desc, year, likeNum } = this.props;  // 这里结构赋值
 
         let { et } = this.context;
+
+        let {isHeartON, yearNum} = this.state;
+
+        let heartClass = isHeartON ? '' : 'empty'
 
         return (
             <div className={"ui card"}>
@@ -34,8 +66,14 @@ export default class Card extends Component{
                     <div className={"description"}>{desc}</div>
                 </div>
                 <div className={"extra content"}>
-                    <span className={"right floated"}>{`${et} in ${year}`}</span>
-                    <span><i className={"empty heart icon"}></i>{` ${likeNum} like`}</span>
+                    <span
+                        className={"right floated"}
+                        onClick={this.yearAdd}
+                    >{`${et} in ${yearNum}`}</span>
+                    <span><i
+                        className={`${heartClass} heart icon`}
+                        onClick={ this.heartClick }
+                    ></i>{` ${likeNum} like`}</span>
                 </div>
             </div>
         )
