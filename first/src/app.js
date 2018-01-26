@@ -56,6 +56,15 @@ class App extends Component {
             et: 'Joined'
         }
     };
+
+    componentDidUpdate(){
+        console.log("App 更新好了");
+    }
+
+    componentDidMount(){
+        console.log("App 渲染好了");
+    }
+
     render(){
         let {view} = this.state;
 
