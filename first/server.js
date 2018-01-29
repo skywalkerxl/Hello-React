@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const webpackDevMiddleware = require('webpack-dev-middleware');  // 热加载
+const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');  // 热加载
 
 const config = require('./webpack.config');

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    var x = 10;
+    function foo(a){
+        var b = 20;
+        function bar(c){
+            var d = 30;
+            console.log(d);
+            console.log(c);
+            return boop(x+a+b+c+d);
+        }
+        function boop(e){
+            return e*-1;
+        }
+        return bar(a);
+    }
+
+    foo(5);
+</script>
+</body>
+</html>
