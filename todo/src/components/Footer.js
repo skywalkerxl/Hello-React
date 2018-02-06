@@ -1,9 +1,10 @@
 let propTypes = {
     leftCount: PT.number,
     showClearButton: PT.bool,
-    onClearCompleted: PT.func
+    onClearCompleted: PT.func,
+    changeView: PT.func,
+    view: PT.oneOf(['all', 'active', 'completed'])  // view的状态只会是这三者的其中之一
 }
-
 
 export default class Footer extends React.Component{
     constructor(props){
@@ -11,7 +12,13 @@ export default class Footer extends React.Component{
     }
 
     render(){
-        let {leftCount, showClearButton, onClearCompleted} = this.props;
+        let {
+            leftCount,
+            showClearButton,
+            onClearCompleted,
+            view,
+            changeView
+        } = this.props;
 
         let clearBtn = null;
 
@@ -34,13 +41,22 @@ export default class Footer extends React.Component{
                 </span>
                 <ul className={"filters"}>
                     <li>
-                        <a href={"#/all"}>All</a>
+                        <a
+                            className={view==="all" ? 'selected' : ""}
+                            onClick={ev => changeView("all")}
+                            href={"#/all"}>All</a>
                     </li>
                     <li>
-                        <a href={"#/active"}>Active</a>
+                        <a
+                            className={view==="active" ? 'selected' : ""}
+                            onClick={ev => changeView("active")}
+                            href={"#/active"}>Active</a>
                     </li>
                     <li>
-                        <a href={"#/completed"}>Completed</a>
+                        <a
+                            className={view==="completed" ? 'selected' : ""}
+                            onClick={ev => changeView("completed")}
+                            href={"#/completed"}>Completed</a>
                     </li>
                 </ul>
                 {clearBtn}

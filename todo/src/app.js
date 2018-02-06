@@ -9,7 +9,8 @@ export default class App extends React.Component{
         super(props);
         this.state= {
             todosData: [],
-            inputVal: ""
+            inputVal: "",
+            view: 'all'
         }
         this.handlerKeyDownPost = this.handlerKeyDownPost.bind(this);
         this.onClearCompleted = this.onClearCompleted.bind(this);
@@ -17,15 +18,35 @@ export default class App extends React.Component{
         this.inputChange = this.inputChange.bind(this);
         this.toggleAll = this.toggleAll.bind(this);
         this.onToggle = this.onToggle.bind(this);
+        this.changeView = this.changeView.bind(this);
+        this.itemEditDown = this.itemEditDown.bind(this);
     }
 
+    // 编辑子项
+    itemEditDown(todo, value){
+        let {todosData} = this.state;
+
+        todosData = todosData.map(elt=>{
+            if(todo.id === elt.id){
+                elt.value = value;
+            }
+            return elt;
+        })
+    }
+
+    // 更改视图
+    changeView(view){
+        this.setState({view});
+    }
+
+    // 输入更改时，修改state
     inputChange(ev){
         this.setState({
             inputVal: ev.target.value
         })
     }
 
-    // 回车
+    // 回车事件
     handlerKeyDownPost(ev){
         if(ev.keyCode != 13) return;
 
@@ -72,6 +93,7 @@ export default class App extends React.Component{
     onToggle(todo){
         let {todosData} = this.state;
 
+        // 这里遍历之后更改其完成状态
         todosData = todosData.map(
             elt => {
                 if(elt.id === todo.id){
@@ -111,24 +133,47 @@ export default class App extends React.Component{
 
 
     render(){
-        let {inputChange, handlerKeyDownPost, onDestroy, onClearCompleted, toggleAll, onToggle } = this;
-        let {todosData, inputVal} = this.state;
+        let {
+            inputChange,
+            handlerKeyDownPost,
+            onDestroy,
+            onClearCompleted,
+            toggleAll,
+            onToggle,
+            changeView,
+            itemEditDown
+        } = this;
+
+        let {todosData, inputVal, view} = this.state;
+
         let items = null,
             footer = null,
             itemsBox = null;
 
         let leftCount = todosData.length;
 
-        items = todosData.map((elt, i)=>{
+        items = todosData.filter(elt=>{
 
             if(elt.hasCompleted)
                 leftCount--;
-            
+
+            switch (view){
+                case 'active':
+                    return !elt.hasCompleted;
+                case 'completed':
+                    return elt.hasCompleted;
+                default:
+                    return true;
+            }
+        });
+
+        items = items.map((elt, i)=>{
             return (
                 <Item {...{
                     onDestroy,
                     todo: elt,
-                    onToggle
+                    onToggle,
+                    itemEditDown
                 }}
                 key={i}
                 />
@@ -157,7 +202,9 @@ export default class App extends React.Component{
                         ...{
                             leftCount,
                             showClearButton: leftCount < todosData.length,
-                            onClearCompleted
+                            onClearCompleted,
+                            changeView,
+                            view
                         }
                     }
                 />)
@@ -175,7 +222,6 @@ export default class App extends React.Component{
                         onKeyDown={handlerKeyDownPost}
                         className={"new-todo"}/>
                 </header>
-
                 {itemsBox}
                 {footer}
             </div>
