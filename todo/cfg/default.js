@@ -24,17 +24,6 @@ let dfConfig = {
 
     module: {
         rules: [
-            /*{
-                test: /\.js$/,
-                use: ['babel-loader'],
-                include: [
-                    path.resolve(__dirname, './src')
-                ]
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            },*/
             {
                 test: /\.(png|jpg|jpeg|gif)$/,
                 loader: 'url-loader?limit=8192'

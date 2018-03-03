@@ -1,3 +1,4 @@
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import Item from 'components/Item.js'
 import Footer from 'components/Footer.js'
 
@@ -229,9 +230,38 @@ export default class App extends React.Component{
     }
 }
 
+function Aac(props){
+    return (
+        <div>我的名字叫Aac</div>
+    )
+}
+
+function Bbc(props){
+    return (
+        <div>我的名字叫Bbc</div>
+    )
+}
 
 ReactDOM.render(
-    <App/>,
+    <Router>
+        <div>
+            <p><Link to={"/"}>app</Link></p>
+            <p><Link to={"/aac"}>aac</Link></p>
+            <p><Link to={"/bbc"}>bbc</Link></p>
+            <Route exact path={"/"} render={
+                ()=>{
+                    return (
+                        <div>
+                            <p>当前这个组件是app</p>
+                            <App/>
+                        </div>
+                    )
+                }
+            }/>
+            <Route exact path={"/aac"} component={Aac}/>
+            <Route path={"/bbc"} component={Bbc}/>
+        </div>
+    </Router>,
     document.getElementById('root')
 );
 

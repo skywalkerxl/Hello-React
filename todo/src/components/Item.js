@@ -47,19 +47,15 @@ export default class Item extends React.Component{
 
     // 编辑状态
     onEdit(){
-        console.log(1);
         let {value} = this.props.todo;
-
+x
         this.setState({
             inEdit: true,
             val: value
         }, ()=> {
             this.refs.editInput.focus()
         });
-
-
     }
-
 
     render(){
 
