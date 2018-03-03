@@ -19,7 +19,7 @@ export default class Home extends React.Component {
             .done( ret => {
                 if (ret.code === 0){
                     this.setState({
-                        previews: ret.data
+                        previews: ret.data.slice(0, 10)
                     })
                 }
             });
@@ -29,7 +29,7 @@ export default class Home extends React.Component {
             ret => {
                 if( ret.code  === 0){
                     this.setState({
-                        authors: ret.data
+                        authors: ret.data.slice(0 ,4)
                     })
                 }
             }

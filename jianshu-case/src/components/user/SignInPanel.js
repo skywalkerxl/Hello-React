@@ -84,11 +84,17 @@ export default class SignInPanel extends React.Component {
         }
     }
 
+    componentWillUnmount(){
+        this.props.ClearLoginMsg();
+    }
+
 
     render(){
         let { nameChange, passwChange, onSubmitChange } = this;
-
-        let {passwErr, nameErr} = this.state;
+        let { signInMsg, ClearLoginMsg, myInfo } = this.props;
+        let { passwErr, nameErr } = this.state;
+        let resInfo = null,
+            userInfo = null;
 
         let nameErrMsg = (nameErr ? (
             <p className={S.err}>{nameErr}</p>
@@ -98,8 +104,25 @@ export default class SignInPanel extends React.Component {
             <p className={S.err}>{passwErr}</p>
         ) : '');
 
+        if( signInMsg ){
+            if(signInMsg.code == 0){
+                resInfo = (
+                    <div className={"ui message positive"}>
+                        <p>{signInMsg.msg}</p>
+                    </div>
+                )
+            }else{
+                resInfo = (
+                    <div className={"ui message error"}>
+                        <p>{signInMsg.msg}</p>
+                    </div>
+                )
+            }
+        }
+
         return (
             <div className={S.sign_panel}>
+                {resInfo}
                 <form
                     className={"ui form"}
                     onSubmit={onSubmitChange}

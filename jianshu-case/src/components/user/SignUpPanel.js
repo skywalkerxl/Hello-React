@@ -30,9 +30,16 @@ export default class SignUpPanel extends React.Component {
             { strategy: 'maxLength:6', errorMsg: '密码不可超过6位' }
         ]);
 
+        this.validator.addByValue('cfPassword', [
+            { strategy: 'isEmpty', errorMsg: '密码不可为空' },
+            { strategy: 'hasSpace', errorMsg: '密码不可包含空格' },
+            { strategy: 'maxLength:6', errorMsg: '密码不可超过6位' }
+        ])
+
         this.nameChange = this.nameChange.bind(this);
         this.passwordChange = this.passwordChange.bind(this);
         this.cfPasswordChange = this.cfPasswordChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     nameChange(ev){
@@ -56,7 +63,6 @@ export default class SignUpPanel extends React.Component {
             passErr: msg
         });
 
-        console.log(cfPassword);
         if( cfPassword != "" ){
             this.cfPasswordChange();
         }
@@ -73,12 +79,49 @@ export default class SignUpPanel extends React.Component {
         });
     }
 
+    // 注册提交
+    onSubmit(ev){
+        ev.stopPropagation();
+        ev.preventDefault();
+
+        let {SignUpAjax} = this.props;
+        let {
+            username,
+            password,
+            cfPassword
+        } = this.state;
+
+        let userErr = this.validator.valiOneByValue('username', username),
+            passErr = this.validator.valiOneByValue('password', password),
+            cfPassErr = (password == cfPassword) ? false : '密码不一致'
+
+        this.setState({
+            userErr,
+            passErr,
+            cfPassErr
+        })
+
+        if( !userErr && !passErr && !cfPassErr ){
+            console.log('可以提交');
+        }else{
+            console.log('不能提交');
+        }
+        /*
+        SignUpAjax({
+            username: username,
+            passw: password
+        })
+        */
+
+    }
+
     render(){
 
         let {
             nameChange,
             passwordChange,
-            cfPasswordChange
+            cfPasswordChange,
+            onSubmit
         } = this;
 
         let {
@@ -99,7 +142,10 @@ export default class SignUpPanel extends React.Component {
 
         return (
             <div className={S.sign_panel}>
-                <form className={"ui form"}>
+                <form
+                    className={"ui form"}
+                    onSubmit={onSubmit}
+                >
                     <div className={"field " + (usernameErr ? 'error': '')}>
                         <input
                             type={"text"}
