@@ -13,8 +13,9 @@ export default class SignInPanel extends React.Component {
             passwErr: false
         }
 
-        this.nameChange = this.nameChange.bind(this)
-        this.passwChange = this.passwChange.bind(this)
+        this.nameChange = this.nameChange.bind(this);
+        this.passwChange = this.passwChange.bind(this);
+        this.onSubmitChange = this.onSubmitChange.bind(this);
 
         this.validator = new Validation()
 
@@ -53,16 +54,39 @@ export default class SignInPanel extends React.Component {
 
         let msg = this.validator.valiOneByValue('password', target.value);
 
-        console.log(msg);
-
         this.setState({
             password: target.value,
             passwErr: msg
         });
     }
 
+    onSubmitChange(ev){
+
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        let { SignInAjax } = this.props;
+
+        let { username, password } = this.state,
+            nameErr = this.validator.valiOneByValue('username', username),
+            passwErr = this.validator.valiOneByValue('password', password);
+
+        this.setState({
+            nameErr,
+            passwErr
+        });
+
+        if ( !nameErr && !passwErr ){
+            SignInAjax({
+                username: username,
+                passw: password
+            })
+        }
+    }
+
+
     render(){
-        let { nameChange, passwChange } = this;
+        let { nameChange, passwChange, onSubmitChange } = this;
 
         let {passwErr, nameErr} = this.state;
 
@@ -76,7 +100,10 @@ export default class SignInPanel extends React.Component {
 
         return (
             <div className={S.sign_panel}>
-                <form className={"ui form"}>
+                <form
+                    className={"ui form"}
+                    onSubmit={onSubmitChange}
+                >
                     <div className={"field " + (nameErr ? 'error': '' )}>
                         <input
                             type={"text"}
@@ -88,7 +115,7 @@ export default class SignInPanel extends React.Component {
                     </div>
                     <div className={"field " + (passwErr ? 'error' : '' )}>
                         <input
-                            type={"text"}
+                            type={"password"}
                             placeholder={"密码"}
                             ref={"passDom"}
                             onChange={passwChange}
