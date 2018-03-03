@@ -8,7 +8,7 @@ export default class Recommend extends React.Component {
     }
 
     render(){
-        let authors = [];
+        let { authors } = this.props;
 
         return (
             <div className={S.recommend}>

@@ -8,13 +8,14 @@ export default class Nav extends React.Component{
 
     render(){
         return (
-            <div className={"ui fixed secondary pointing menu ${S.nav}"}>
+            <div className={"ui fixed secondary pointing menu " + S.nav}>
                 <div className={"ui container"}>
                     <Link to={"/"}
                           className={"header item"}
                     >Noods</Link>
 
-                    <NavLink exact to={"/"}
+                    <NavLink exact
+                             to={"/"}
                              className={"item"}
                              activeClassName={"active"}
                     >首页</NavLink>

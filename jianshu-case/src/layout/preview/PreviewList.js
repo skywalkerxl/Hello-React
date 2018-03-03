@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom';
 import Preview from './Preview';
 import S from './style.scss'
+import cfg from 'config/config';
 
 export default class PreviewList extends React.Component {
     constructor(props){
@@ -10,8 +11,6 @@ export default class PreviewList extends React.Component {
 
     render(){
         let {previews} = this.props;
-
-        previews = [];
 
         previews = previews.map((elt, i) => {
             let {
@@ -26,6 +25,8 @@ export default class PreviewList extends React.Component {
             } = elt;
 
             let {avatar, user_name, user_intro} = user;
+
+            avatar = cfg.url + avatar; // 获取服务器上的头像
 
             return (
                 <Preview

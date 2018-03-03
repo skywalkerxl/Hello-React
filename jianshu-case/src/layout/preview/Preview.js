@@ -4,10 +4,10 @@ import S from './style.scss';
 export default class Preview extends React.Component {
     constructor(props){
         super(props);
-        this.props = props;
     }
 
     render(){
+
         let {
             article_id,
             article_title,
@@ -31,7 +31,7 @@ export default class Preview extends React.Component {
                             <img src={avatar} alt={""} className={"ui avatar image"} />
                         </Link>
 
-                        <div className={"${S.name}"}>
+                        <div className={S.name}>
                             <Link to={"/"}> {user_name} </Link>
                             <span className={"time"}>{createdAt}</span>
                         </div>
@@ -41,7 +41,7 @@ export default class Preview extends React.Component {
                         {previewContent}
                     </p>
                     <div className={S.meta}>
-                        {props.children}
+                        {this.props.children}
                     </div>
                 </div>
             </div>
