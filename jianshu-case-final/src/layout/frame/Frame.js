@@ -223,6 +223,7 @@ export default class Frame extends React.Component{
 
                     )
                 }/>
+
                 {/* 注册路由 */}
                 <Route exact path="/sign_up" render={
                     (props)=>(
